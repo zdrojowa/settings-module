@@ -1,0 +1,7 @@
+name: SettingsModule
+version: 1.0.0
+
+aclAnchor: SettingsModule
+aclName: Ustawienia
+
+routePrefix: SettingsModule

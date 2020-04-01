@@ -1,0 +1,5 @@
+settings:
+  name: Ustawienia
+  icon: mdi mdi-settings
+  permission: SettingsModule
+  route: SettingsModule::settings
