@@ -103,6 +103,11 @@ class SettingsController extends Controller
         return response()->json(Setting::query()->findOrFail($id));
     }
 
+    public function getByKey(string $key): JsonResponse
+    {
+        return response()->json(Setting::query()->where('key', '=', $key)->firstOrFail());
+    }
+
     public function checkKey($id, Request $request): JsonResponse
     {
         $exists = Setting::query()->where('_id', '!=', $id)

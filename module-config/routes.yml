@@ -62,6 +62,13 @@ settings.get:
     - GET
   permission: SettingsModule
 
+settings.getByKey:
+  path: /dashboard/settings/getByKey/{{key}}
+  controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@getByKey
+  methods:
+    - GET
+  permission: SettingsModule
+
 settings.checkKey:
   path: /dashboard/settings/checkKey/{{id}}
   controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@checkKey
