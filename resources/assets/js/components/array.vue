@@ -34,7 +34,9 @@
             }
         },
         created () {
-            this.items = this.defaultItems;
+            if (typeof this.defaultItems != 'undefined') {
+                this.items = this.defaultItems;
+            }
         }
     }
 </script>

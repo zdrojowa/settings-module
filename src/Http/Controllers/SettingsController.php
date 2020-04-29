@@ -95,7 +95,11 @@ class SettingsController extends Controller
 
     public function types(): JsonResponse
     {
-        return response()->json(SettingType::toArray());
+        $types = [];
+        foreach (SettingType::toArray() as $key => $value) {
+            $types[] = $value;
+        }
+        return response()->json($types);
     }
 
     public function get($id): JsonResponse

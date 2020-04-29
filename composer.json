@@ -9,8 +9,9 @@
         }
     ],
     "homepage": "https://github.com/zdrojowa/settings-module",
-    "keywords": ["Laravel", "SettingsModule"],
+    "keywords": ["Laravel", "SettingsModule", "Vue"],
     "require": {
+        "ext-json": "*",
         "illuminate/support": "^6.0",
         "zdrojowa/cms-kernel": "^2.0",
         "zdrojowa/dashboardmodule": "^1.1"
