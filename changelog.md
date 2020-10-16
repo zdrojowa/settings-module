@@ -8,3 +8,6 @@
 
 ### Version 1.0.3
 - fix files array
+
+### Version 1.0.4
+- add API

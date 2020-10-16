@@ -1,0 +1,5 @@
+api.settings:
+  path: /settings
+  controller: Selene\Modules\SettingsModule\Http\Controllers\ApiController@get
+  methods:
+    - GET
