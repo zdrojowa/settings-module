@@ -11,7 +11,8 @@
     "homepage": "https://github.com/zdrojowa/settings-module",
     "keywords": ["Laravel", "SettingsModule", "Vue"],
     "require": {
-        "zdrojowa/dashboardmodule": "^2.0"
+        "zdrojowa/dashboardmodule": "^2.0",
+        "zdrojowa/media-module": "^1.0"
     },
     "autoload": {
         "psr-4": {
