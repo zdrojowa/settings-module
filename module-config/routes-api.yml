@@ -3,3 +3,16 @@ api.settings:
   controller: Selene\Modules\SettingsModule\Http\Controllers\ApiController@get
   methods:
     - GET
+
+api.checkKey:
+  path: /settings/check-key
+  controller: Selene\Modules\SettingsModule\Http\Controllers\ApiController@checkKey
+  methods:
+    - GET
+
+api.remove:
+  path: /settings/remove/{{setting}}
+  controller: Selene\Modules\SettingsModule\Http\Controllers\ApiController@remove
+  methods:
+    - DELETE
+  permission: SettingsModule.delete

@@ -1,19 +1,17 @@
 import Vue from 'vue';
-import MultiSelect from 'vue-multiselect';
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
-import { Datetime } from 'vue-datetime';
+import {BootstrapVue, BootstrapVueIcons, IconsPlugin} from 'bootstrap-vue';
+import VueRouter from 'vue-router'
+import Index from './components/Index'
+import Setting from './components/Setting'
 
 window.axios = require('axios');
 
-Vue.use(BootstrapVue);
-Vue.use(IconsPlugin);
+Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
+Vue.use(VueRouter)
 
-Vue.component('multiselect', MultiSelect);
-Vue.component('datetime', Datetime);
-Vue.component('array', require('./components/array.vue').default);
-Vue.component('media-selector', require('./components/media-selector.vue').default);
-Vue.component('setting', require('./components/setting.vue').default);
+const app = document.getElementById('app');
 
-const app = new Vue({
-    el: '#app'
-});
+new Vue({
+    components: {Index, Setting}
+}).$mount(app);

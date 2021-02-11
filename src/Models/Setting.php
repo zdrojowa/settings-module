@@ -3,7 +3,6 @@
 namespace Selene\Modules\SettingsModule\Models;
 
 use Jenssegers\Mongodb\Eloquent\Model;
-use Selene\Modules\SettingsModule\Support\SettingType;
 
 /**
  * @method static create(array $all)
@@ -23,13 +22,7 @@ class Setting extends Model
     public static function getAllByKey() {
         $settings = [];
         foreach (self::all() as $setting) {
-            $settings[$setting->key]['type'] = $setting->type;
-
-            if (SettingType::isFile($setting->type) || $setting->type === 'array') {
-                $settings[$setting->key]['value'] = json_decode($setting->value, true);
-            } else {
-                $settings[$setting->key]['value'] = $setting->value;
-            }
+            $settings[$setting->key] = $setting;
         }
         return $settings;
     }

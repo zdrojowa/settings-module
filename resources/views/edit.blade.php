@@ -1,31 +1,33 @@
-@extends('DashboardModule::dashboard.index')
+@extends('DashboardModule::dashboard.index', ['title' => (isset($setting) ? 'Edytowanie ' : 'Dodawanie ') . 'ustawienia'])
 
-@section('stylesheets')
-    <link rel="stylesheet" href="{{ mix('vendor/css/MediaManager.css','') }}">
-    <link rel="stylesheet" href="{{ mix('vendor/css/SettingsModule.css','') }}">
+@section('navbar-actions')
+    <b-nav-form>
+        <b-button size="sm" class="my-2 my-sm-0" type="button" to="{{ route('SettingsModule::index') }}">
+            <b-icon-arrow-left></b-icon-arrow-left> Do listy
+        </b-button>
+    </b-nav-form>
 @endsection
 
 @section('content')
-    <div class="content-wrapper">
+    <b-container fluid>
+        <setting
+            route="{{ isset($setting) ? route('SettingsModule::update', ['setting' => $setting]) : route('SettingsModule::store') }}"
+            csrf="{{ csrf_token() }}"
+            :types="{{ json_encode($types) }}"
+            media-search-route="{{ route('MediaModule::api.files') }}"
+            media-route='/media/'
+            check-key-route="{{ route('SettingsModule::api.checkKey') }}"
+            :setting="{{ isset($setting) ? json_encode($setting) : json_encode(null) }}"
+        >
+        </setting>
+    </b-container>
+@endsection
 
-        <div id="app">
-            @if (isset($setting))
-                <setting :_id=`{{ $setting->_id }}`>
-                    {{ csrf_field() }}
-                </setting>
-            @else
-                <setting :_id="0">
-                    {{ csrf_field() }}
-                </setting>
-            @endif
-        </div>
-    </div>
-
+@section('stylesheets')
+    @parent
+    <link rel="stylesheet" href="{{ mix('vendor/css/MediaModule.css') }}">
 @endsection
 
 @section('javascripts')
-    @parent
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@13.0.1/dist/lazyload.min.js"></script>
-    <script src="{{ mix('vendor/js/MediaManager.js') }}"></script>
-    <script src="{{ mix('vendor/js/SettingsModule.js') }}"></script>
+    <script src="{{ mix("vendor/js/SettingsModule.js") }}"></script>
 @endsection

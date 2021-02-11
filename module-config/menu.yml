@@ -1,5 +1,5 @@
 settings:
   name: Ustawienia
-  icon: mdi mdi-settings
+  icon: gear
   permission: SettingsModule
-  route: SettingsModule::settings
+  route: SettingsModule::index

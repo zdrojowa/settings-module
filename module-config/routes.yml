@@ -1,77 +1,35 @@
-settings:
+index:
   path: /dashboard/settings
   controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@index
   methods:
     - GET
   permission: SettingsModule
 
-settings.ajax:
-  path: /dashboard/settings/ajax
-  controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@ajax
-  methods:
-    - POST
-  permission: SettingsModule
-
-settings.create:
+create:
   path: /dashboard/settings/create
   controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@create
   methods:
     - GET
   permission: SettingsModule.add
 
-settings.store:
+store:
   path: /dashboard/settings/store
   controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@store
   methods:
     - POST
   permission: SettingsModule.add
 
-settings.edit:
+edit:
   path: /dashboard/settings/{{setting}}/edit
   controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@edit
   methods:
     - GET
   permission: SettingsModule.edit
 
-settings.update:
+update:
   path: /dashboard/settings/{{setting}}
   controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@update
   methods:
     - PUT
     - PATCH
   permission: SettingsModule.edit
-
-settings.destroy:
-  path: /dashboard/settings/{{setting}}
-  controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@destroy
-  methods:
-    - DELETE
-  permission: SettingsModule.delete
-
-settings.types:
-  path: /dashboard/settings/types
-  controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@types
-  methods:
-    - GET
-  permission: SettingsModule
-
-settings.get:
-  path: /dashboard/settings/get/{{id}}
-  controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@get
-  methods:
-    - GET
-  permission: SettingsModule
-
-settings.getByKey:
-  path: /dashboard/settings/getByKey/{{key}}
-  controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@getByKey
-  methods:
-    - GET
-  permission: SettingsModule
-
-settings.checkKey:
-  path: /dashboard/settings/checkKey/{{id}}
-  controller: Selene\Modules\SettingsModule\Http\Controllers\SettingsController@checkKey
-  methods:
-    - GET
-  permission: SettingsModule

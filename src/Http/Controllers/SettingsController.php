@@ -2,37 +2,35 @@
 
 namespace Selene\Modules\SettingsModule\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Selene\Modules\DashboardModule\ZdrojowaTable;
 use Selene\Modules\SettingsModule\Models\Setting;
 use Selene\Modules\SettingsModule\Support\SettingType;
 
 class SettingsController extends Controller
 {
-
     public function index() {
-        return view('SettingsModule::list');
-    }
-
-    public function ajax(Request $request) {
-        return ZdrojowaTable::response(Setting::query(), $request);
+        return view('SettingsModule::index');
     }
 
     public function create() {
-        return view('SettingsModule::edit');
+        return view('SettingsModule::edit', [
+            'types' => SettingType::getArray()
+        ]);
     }
 
     public function edit(Setting $setting) {
-        return view('SettingsModule::edit', ['setting' => $setting]);
+        return view('SettingsModule::edit', [
+            'setting' => $setting,
+            'types' => SettingType::getArray()
+        ]);
     }
 
     public function store(Request $request) {
         $setting = $this->save($request);
         if ($setting) {
             $request->session()->flash('alert-success', 'Ustawienie zostało pomyślnie utworzone');
-            return ['redirect' => route('SettingsModule::settings.edit', ['setting' => $setting])];
+            return ['redirect' => route('SettingsModule::edit', ['setting' => $setting])];
         }
 
         $request->session()->flash('alert-error', 'Ooops. Try again.');
@@ -40,38 +38,35 @@ class SettingsController extends Controller
     }
 
     public function update(Request $request, Setting $setting) {
-
         if ($this->save($request, $setting)) {
             $request->session()->flash('alert-success', 'Ustawienie zostało zaktualizowane');
         } else {
             $request->session()->flash('alert-error', 'Ooops. Try again.');
         }
 
-        return ['redirect' => route('SettingsModule::settings.edit', ['setting' => $setting])];
+        return ['redirect' => route('SettingsModule::edit', ['setting' => $setting])];
     }
 
     private function save(Request $request, Setting $setting = null) :? Setting
     {
-        $obj   = json_decode($request->get('obj'));
-        $type  = $obj->type;
-        $value = $obj->value;
-        $key   = $obj->key;
-
-        $request->merge([
-            'key'   => $key,
-            'type'  => $type,
-            'value' => $value,
-        ]);
-        if (SettingType::isFile($type)) {
-            $request->merge(['value' => $request->get('files')]);
-        } elseif ($type === 'bool') {
-            $request->merge(['value' => $request->get('value')]);
+        $type  = $request->get('type');
+        $value = $request->get('value');
+        if ($type === 'bool') {
+            $request->merge(['value' => $value === 'true']);
+        } elseif($type === 'datetime') {
+            $request->merge(['value' => $value . ' ' . $request->get('time')]);
+        } elseif($type === 'array') {
+            $request->merge(['value' => json_decode($request->get('array'))]);
+        } elseif (SettingType::isFile($type)) {
+            $files = [];
+            foreach(json_decode($request->get('files')) as $file) {
+                $files[] = ['id' => $file->file->_id, 'type' => $file->type];
+            }
+            $request->merge(['value' => $files]);
         } elseif ($type === 'int') {
             $request->merge(['value' => $value >> 0]);
         } elseif ($type === 'decimal') {
             $request->merge(['value' => (float) str_replace(',', '.', $value)]);
-        } elseif ($type === 'array') {
-            $request->merge(['value' => json_encode($obj->array)]);
         }
 
         if ($setting === null) {
@@ -81,42 +76,5 @@ class SettingsController extends Controller
             return $setting;
         }
         return null;
-    }
-
-    public function destroy(Setting $setting, Request $request): void
-    {
-        try {
-            $setting->delete();
-            $request->session()->flash('alert-success', 'Ustawienie zostało usunęte');
-        } catch (\Exception $e) {
-            $request->session()->flash('alert-error', 'Error: ' . $e->getMessage());
-        }
-    }
-
-    public function types(): JsonResponse
-    {
-        $types = [];
-        foreach (SettingType::toArray() as $key => $value) {
-            $types[] = $value;
-        }
-        return response()->json($types);
-    }
-
-    public function get($id): JsonResponse
-    {
-        return response()->json(Setting::query()->findOrFail($id));
-    }
-
-    public function getByKey(string $key): JsonResponse
-    {
-        return response()->json(Setting::query()->where('key', '=', $key)->firstOrFail());
-    }
-
-    public function checkKey($id, Request $request): JsonResponse
-    {
-        $exists = Setting::query()->where('_id', '!=', $id)
-            ->where('key', '=', $request->get('key'))
-            ->exists();
-        return response()->json(!$exists);
     }
 }

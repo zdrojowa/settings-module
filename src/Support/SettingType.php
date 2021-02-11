@@ -22,4 +22,20 @@ class SettingType extends Enum
     public static function isFile($type) {
         return in_array($type, ['image', 'video', 'file']);
     }
+
+    public static function get() {
+        $types = [];
+        foreach (self::toArray() as $key => $value) {
+            $types[] = $value;
+        }
+        return $types;
+    }
+
+    public static function getArray() {
+        $types = [];
+        foreach (self::toArray() as $key => $value) {
+            $types[] = ['value' => $value, 'text' => $value];
+        }
+        return $types;
+    }
 }
