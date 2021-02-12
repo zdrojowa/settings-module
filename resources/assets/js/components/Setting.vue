@@ -81,8 +81,8 @@
 </template>
 
 <script>
-    import Selector from './../../../../../../../vendor/zdrojowa/media-module/resources/assets/js/components/Selector'
-    import FileView from './../../../../../../../vendor/zdrojowa/media-module/resources/assets/js/components/FileView'
+    import Selector from './../../../../../media-module/resources/assets/js/components/Selector'
+    import FileView from './../../../../../media-module/resources/assets/js/components/FileView'
     export default {
         props : ['csrf', 'route', 'setting', 'types', 'mediaSearchRoute', 'mediaRoute', 'checkKeyRoute'],
         components: {
@@ -160,7 +160,11 @@
                 this.value.forEach(file => {
                     axios.get(self.mediaSearchRoute + '?search=' + file.id)
                     .then(res => {
-                        self.files.push({file: res.data[0], type: file.type})
+                      if (0 in res.data) {
+                        if (file.type === 'default' || file.type in res.data[0].types) {
+                          self.files.push({file: res.data[0], type: file.type})
+                        }
+                      }
                     }).catch(err => {
                         console.log(err)
                     })
